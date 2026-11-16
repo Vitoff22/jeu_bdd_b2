@@ -24,16 +24,32 @@
 
 #faire choisir 3 personnages au joueur
     #creer une equipe vide
-    # tant que vrai
-        #si le joueur n'a pas choisi 3 perso
-            #retourner faux
-        #si le perso n'existe pas dans la liste
-            #retouner faux
+    #afficher la liste des perso
+    # tant que l'equipe contient pas 3 joueurs
+        #afficher les perso disponibles
+        #demander au joueur de choisir
+
+        #si le joueur n'existe pas
+            #afficher message d'erreur
+            #redemander un choix
+        #si le perso est deja dans l'equipe
+            #afficher un message d'erreur
+            #redemander un choix
         #sinon
             #retourner vrai
 
 #equipe complete
-    #tant que equipe n'est pas egale a 3
-        #retourner faux
+    #si contient 3 perso
+        #afficher l'equipe complete
+        #passer au combat
     #sinon
-        #retourner vrai
+        #retourner choisir 3 perso
+
+#combat
+
+#prendre aleatoirement un premier monstre a affronté
+#afficher les points de vie du perso
+#afficher les points de vie du monstre
+
+#tant que le monstre est en vie et que l membre de l'equipe aussi
+    #
