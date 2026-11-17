@@ -5,7 +5,7 @@
         #afficher le menu
         #recuperer le choix
         #si demarrer
-            #demarrer_partie()
+            #demarrer_partie(personnage, monstres, db)
         #sinon
             #arreter le jeu
 
@@ -23,7 +23,7 @@
     # appeler enregistrer_score()
     # afficher le resultat final
 
-#récuperer le choix de l'utilisateur
+#fonction récuperer le choix de l'utilisateur
     #tant que le choix n'est pas valide
         #demander au joueur de saisir un choix
         #si le choix est un nombre n'est pas valide
@@ -33,8 +33,7 @@
             #afficher que le choix n'est pas valide
             #redemander un choix
         #sinon  
-            #retourner vrai 
-            #break
+            #retourner le choix
 
 #fonction choisir un pseudo
     #tant que le pseudo n'est pas valide
@@ -67,18 +66,12 @@
     #retourner l'equipe complete
 
 #fonction verifier perso(personnage, equipe, personnages)
-    #si le joueur n'existe pas dans mongoDB
-        #afficher message d'erreur
-        #redemander un choix
-
-    #si le perso est deja dans l'equipe
-        #afficher un message d'erreur
-        #redemander un choix
-
-    #sinon
-        #ajouteer une copie du personnage a l'equipe
-        #afficher le personnage ajouté
-        #afficher le nombre de perso selectionnés
+    # si le personnage n'existe pas dans la liste
+        # retourner faux
+    # si le personnage est déjà dans l'équipe
+        # retourner faux
+    # sinon
+        # retourner vrai
 
 #fonction verifier equipe complete
     #si contient 3 perso
@@ -96,15 +89,15 @@
         #retouner au choix des perso
 
 
-# fonction lancer_combat(equipe)
+# fonction lancer_combat(equipe, monstres)
     # initialiser le score à 0
     # pour chaque manche de 1 à 3
-        # appeler jouer_manche()
-        # si le résultat est une victoire
-            # appeler ajouter_score()
-        # sinon
-            # afficher la défaite
-            # arrêter les manches
+        #recuperer le resultat du combat de jouer_manche()
+        # appeler modifier_score(score, resultat)
+        # si le résultat est une defaite
+            #arreter les manches
+    # si les 3 manches sont gagnées
+        #afficher le victoire finale 
     # retourner le score et le résultat final
 
 # fonction combattre(equipe, monstre)
