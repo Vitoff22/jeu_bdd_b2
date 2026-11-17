@@ -73,34 +73,61 @@
         #retouner au choix des perso
 
 
-#fonction lancer le combat
+#fonction lancer le combat(equipe)
     #initialiser le score a 0
     ##afficher manche 1
-    #afficher les points de vie des perso
-    #afficher les points de vie du monstre
-
-#tant que le monstre est en vie et que l membre de l'equipe aussi
-    #continue le combat
-    #si le monstre meurt passe a la manche 2
-    #si toute l'equipe meurt
-        #afficher tu as perdu la manche
-    #sinon continuer
-
-#manche 2
-    #afficher manche 2
-    #tant que le monstre est en vie et que l membre de l'equipe aussi
-        #continue le combat
-        #si le monstre meurt passe a la manche 3
+    
+    #pour manche 1 a 3
+        #appeler jouer manche()
+        #si le monstre meurt passe a la manche 2
         #si toute l'equipe meurt
-            #afficher tu as perdu la manche 2
-        #sinon continuer
+            #afficher tu as perdu la manche
+        #sinon 
+            #ajouter les points au score
+        #retourner les resultats de la partie
 
-#manche 3
-    #afficher manche3
-    #tant que le monstre est en vie et que l membre de l'equipe aussi
-        #continue le combat
-        #si le monstre meurt
-            #afficher bravo tu as gagné
-        #si toute l'equipe meurt
-            #afficher tu as perdu la manche 3
-        #sinon continuer
+#fonction combattre(equipe, monstre)
+    #tant que le monstre et l'equipe sont vivants
+        #appeler tour equipe()
+            #appeler tour monstre()
+    #appeler verifier victoire
+    #retourner le resultat
+
+#fonction tour equipe(equipe, monstre)
+    #pour chaque personnage de l'equipe
+        #si le monstre est mort
+            #stopper le tour
+        #si le perso est vivant
+            #appeler attaque monstre
+
+#fonction attaquer monstre(perso, monstre)
+    # récupérer les dégâts du personnage
+    # appeler calculer_degats()
+    # retirer les dégâts aux PV du monstre
+    # afficher les dégâts
+    # afficher les PV restants
+
+#fonction tour monstre
+    # recuperer les perso vivants
+    # choisir un perso vivant aleatoirement 
+    # appeler attaque monstre
+
+#fonction attaquer personnage(monstre, personnage)
+    # récupérer les dégâts du monstre
+    # appeler calculer_degats()
+    # retirer les dégâts aux PV du personnage
+    # afficher les dégâts
+    # afficher les PV restants
+
+
+#fonction ajouter score
+    #si l'utilisateur gagne
+        #afficher tu as gagné un point
+        #ajouter 1 au score
+
+    #elif si l'utilisateur perd
+        #afficher tu as perdu un point
+        #enlever un point
+
+    #else
+        #afficher le score n'a pas changé
