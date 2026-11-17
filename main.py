@@ -1,9 +1,32 @@
-#afficher le menu(demarrer le jeu, option, quitter)
+#fonction main()
+    #connecter MongoDB
+    # recuperer les personnages et les monstres
+    #tant que le joueur ne quitte pas
+        #afficher le menu
+        #recuperer le choix
+        #si demarrer
+            #demarrer_partie()
+        #sinon
+            #arreter le jeu
+
+# Fonction connecter_mongodb()
+# Fonction récupérer les personnages
+# Fonction récupérer les monstres
+
+# fonction demarrer_partie(personnages, monstres, db)
+    # appeler choisir_pseudo()
+    # recuperer le pseudo
+    # appeler creer_equipe(personnages)
+    # recuperer l'equipe complete
+    # appeler lancer_combat(equipe, monstres)
+    # recupere le score et le resultat
+    # appeler enregistrer_score()
+    # afficher le resultat final
 
 #récuperer le choix de l'utilisateur
     #tant que le choix n'est pas valide
         #demander au joueur de saisir un choix
-        #si le choix est un nombre valide
+        #si le choix est un nombre n'est pas valide
             #afficher un message d'erreur
             #redemander un choix
         #si le choix n'est pas compris la liste du menu
@@ -73,25 +96,24 @@
         #retouner au choix des perso
 
 
-#fonction lancer le combat(equipe)
-    #initialiser le score a 0
-    ##afficher manche 1
-    
-    #pour manche 1 a 3
-        #appeler jouer manche()
-        #si le monstre meurt passe a la manche 2
-        #si toute l'equipe meurt
-            #afficher tu as perdu la manche
-        #sinon 
-            #ajouter les points au score
-        #retourner les resultats de la partie
+# fonction lancer_combat(equipe)
+    # initialiser le score à 0
+    # pour chaque manche de 1 à 3
+        # appeler jouer_manche()
+        # si le résultat est une victoire
+            # appeler ajouter_score()
+        # sinon
+            # afficher la défaite
+            # arrêter les manches
+    # retourner le score et le résultat final
 
-#fonction combattre(equipe, monstre)
-    #tant que le monstre et l'equipe sont vivants
-        #appeler tour equipe()
-            #appeler tour monstre()
-    #appeler verifier victoire
-    #retourner le resultat
+# fonction combattre(equipe, monstre)
+    # tant que le monstre et l'équipe sont vivants
+        # appeler tour_equipe()
+        # si le monstre est encore vivant
+            # appeler tour_monstre()
+    # appeler verifier_victoire()
+    # retourner le résultat
 
 #fonction tour equipe(equipe, monstre)
     #pour chaque personnage de l'equipe
@@ -101,33 +123,62 @@
             #appeler attaque monstre
 
 #fonction attaquer monstre(perso, monstre)
-    # récupérer les dégâts du personnage
+    # récupérer les dégats du personnage
     # appeler calculer_degats()
-    # retirer les dégâts aux PV du monstre
-    # afficher les dégâts
+    # retirer les degats aux PV du monstre
+    # afficher les degats
     # afficher les PV restants
 
 #fonction tour monstre
     # recuperer les perso vivants
     # choisir un perso vivant aleatoirement 
-    # appeler attaque monstre
+    # appeler attaque personnage
 
 #fonction attaquer personnage(monstre, personnage)
-    # récupérer les dégâts du monstre
+    # recuperer les dégâts du monstre
     # appeler calculer_degats()
     # retirer les dégâts aux PV du personnage
-    # afficher les dégâts
+    # afficher les degats
     # afficher les PV restants
 
+#fonction jouer manche(equipe, monstres, manche)
+    #choisir un monstre
+    #afficher le numero de manche
+    # afficher les PV des personnages
+    # afficher les PV du monstre
+    # appeler combattre()
+    # retourner le résultat
 
-#fonction ajouter score
-    #si l'utilisateur gagne
-        #afficher tu as gagné un point
-        #ajouter 1 au score
+# fonction est_vivant(personnage)
+    # si les PV sont supérieurs à zéro
+        # retourner vrai
+    # sinon
+        # retourner faux
 
-    #elif si l'utilisateur perd
-        #afficher tu as perdu un point
-        #enlever un point
 
-    #else
-        #afficher le score n'a pas changé
+# fonction equipe_vivante(equipe)
+    # pour chaque personnage de l'équipe
+        # si le personnage est vivant
+            # retourner vrai
+    # retourner faux
+
+
+# fonction calculer_degats(attaquant)
+    # récupérer les dégâts de l'attaquant
+    # retourner les dégâts
+
+
+# fonction verifier_victoire(monstre)
+    # si les PV du monstre sont inférieurs ou égaux à 0
+        # retourner victoire
+    # sinon
+        # retourner défaite
+
+# fonction modifier_score(score, resultat)
+    # si le joueur gagne
+        # ajouter 1 au score
+        # afficher le point gagné
+    # sinon si le joueur perd
+        # retirer 1 au score sans descendre sous 0
+        # afficher le point perdu
+    # retourner le score
