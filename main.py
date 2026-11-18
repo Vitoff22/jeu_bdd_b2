@@ -3,46 +3,74 @@ from pymongo import MongoClient
 TAILLE_EQUIPE = 3
 
 #fonction main()
+def main():
     #connecter MongoDB et recuperer db
+    db = connecter_mongodb()
     #tant que vrai
+    while True:
         #appeler demander_menu() et recuperer le choix
+        choix = demander_menu()
         #si demarrer
+        if choix == 1:
             #appeler demarrer_partie(db)
+            demarrer_partie(db)
         #ou si le choix est voir les perso
+        elif choix == 2:
             #appeler afficher_personnages_dispo(db)
+            afficher_personnages_dispo(db)
         #sinon
+        else:
             #arreter le jeu
+            break
 
 
 #fonction demander_menu()
+def demander_menu():
     #tant que vrai
+    while True:
         #afficher les options numerotés
+        print("1. Démarrer")
+        print("2. Voir les personnages")
+        print("3. Quitter")
         # demander au joueur de saisir un choix
+        try:
+            choix = int(input("Ton choix : "))
         # si le choix n'est pas un entier valide
+        except ValueError:
             # afficher un message d'erreur
+            print("Tu dois saisir un entier.")
+            continue
         # sinon si le choix n'est pas compri entre 1 et 3
+        if 1 <= choix <= 3:
+            return choix
             # afficher un message d'erreur
-        # sinon
-            # retourner le choix converti en entier
+        print("Ton choix n'est pas dans les options")        
 
 
 
 # Fonction connecter_mongodb()
+def connecter_mongodb():
     # etablir la connexion à MongoDB
+    client = MongoClient("mongodb://localhost:27017/")
     # sélectionner la base de données
     # retourner db
+    return client["jeu_video"]
 
 # Fonction recuperer_personnages(db)
-    # récupérer les personnages dans MongoDB
+def recuperer_personnages(db):
+    # récupérer les personnages dans MongoD
     # retourner la liste des personnages
+    return list(db["characters"].find())
 
 # Fonction recuperer_monstres(db)
+def recuperer_monstres(db):
     # récupérer les monstres dans MongoDB
     # retourner la liste des monstres
-
+    return list(db["monsters"].find())
 
 
 # fonction demarrer_partie(db)
+def demarrer_partie(db):
     # recuperer personnages avec recuperer_personnages(db)
     # si moins de TAILLE_EQUIPE personnages, afficher une erreur et revenir au menu
     # recuperer pseudo avec demander_pseudo(db)
@@ -53,7 +81,7 @@ TAILLE_EQUIPE = 3
     # recupere le score et le resultat
     # appeler enregistrer_score(db, pseudo, score, resultat)
     # afficher le resultat final et le score
-
+    ...
 
 
 #fonction demander_pseudo(db)
@@ -175,9 +203,11 @@ TAILLE_EQUIPE = 3
     # enregistrer le document dans MongoDB
 
 # fonction afficher_personnages_dispo(db)
+def afficher_personnages_dispo(db):
     #appeler recuperer_personnages(db)
     #récuperer personnages
     #appeler afficher_personnages(personnages)
+    ...
 
 # fonction afficher_personnages(personnages)
     # pour chaque personnage en tant que perso
@@ -188,3 +218,6 @@ TAILLE_EQUIPE = 3
     #si resultat est une victoire
         #retourner score +1
     #retourner le maximum entre 0 et score -1
+
+if __name__ == "__main__":
+    main()
