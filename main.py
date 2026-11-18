@@ -1,4 +1,6 @@
-#TAILLE_EQUIPE = 3
+from pymongo import MongoClient
+
+TAILLE_EQUIPE = 3
 
 #fonction main()
     #connecter MongoDB et recuperer db
@@ -58,13 +60,13 @@
     #recuperer pseudos avec recuperer_pseudo_db(db)
     #tant que Vrai
         #entrez son pseudo et enlever les espaces au debut et a la fin
-        #si pseudo_valide(pseudo, pseudos) est faux
+        #si est_pseudo_valide(pseudo, pseudos) est faux
             #afficher un message d'erreur
 
         #else
             #retourner pseudo
 
-#fonction pseudo_valide(pseudo, pseudos)
+#fonction est_pseudo_valide(pseudo, pseudos)
     #si la longueur du pseudo est comprise en 3 et 10 et que le pseudo n'est pas dans pseudos
         #retourner vrai
     #retourner faux
@@ -80,7 +82,7 @@
         #afficher les perso disponibles
         #demander au joueur de choisir
 
-        #si personnage_valide(personnage, equipe, personnages)
+        #si est_personnage_valide(personnage, equipe, personnages)
             #ajouter une copie du personnage à l'equipe
         #sinon
             #afficher un message d'erreur
@@ -88,7 +90,7 @@
     #retourner l'equipe complete
 
 
-#fonction personnage_valide(personnage, equipe, personnages)
+#fonction est_personnage_valide(personnage, equipe, personnages)
     # si le personnage n'existe pas dans la liste
         # retourner faux
     # si le personnage est déjà dans l'équipe
@@ -107,7 +109,7 @@
 
 
 # fonction combattre(equipe, monstre)
-    # tant que est_vivant(monstre) et equipe_vivante(equipe)
+    # tant que est_vivant(monstre) et est_equipe_vivante(equipe)
         # appeler tour_equipe(equipe, monstre)
         # si le monstre est encore vivant
             # appeler tour_monstre(equipe, monstre)
@@ -149,7 +151,7 @@
         # retourner faux
 
 
-# fonction equipe_vivante(equipe)
+# fonction est_equipe_vivante(equipe)
     # pour chaque personnage de l'équipe
         # si est_vivant(personnage)
             # retourner vrai
