@@ -1,6 +1,15 @@
+from random import choice
 from pymongo import MongoClient
 
+#taille de l'equipe
 TAILLE_EQUIPE = 3
+
+#champs de moongodb
+CHAMP_NOM = "name"
+CHAMP_PV = "hp"
+CHAMP_DEGATS = "damage"
+CHAMP_PSEUDO = "pseudo"
+
 
 #fonction main()
 def main():
@@ -71,44 +80,62 @@ def recuperer_monstres(db):
 
 # fonction demarrer_partie(db)
 def demarrer_partie(db):
-    # recuperer personnages avec recuperer_personnages(db)
-    # si moins de TAILLE_EQUIPE personnages, afficher une erreur et revenir au menu
-    # recuperer pseudo avec demander_pseudo(db)
-    # recuperer equipe avec demander_equipe(personnages)
-    # recuperer monstres avec recuperer_monstres(db)
-    # si aucun monstre, afficher une erreur et revenir au menu
-    # appeler lancer_combat(equipe, monstres)
-    # recupere le score et le resultat
+    #recuperer les perso et monstres
+    personnages, monstres = charger_combattants(db)
+    #appeler demander_pseudo
+    pseudo = demander_pseudo(db)
+    #appeler demander_equipe
+    equipe = demander_equipe(personnages)
+    # appeler lancer_combat(equipe, monstres) et recupere le score et le resultat
+    score, resultat = lancer_combat(equipe, monstres)
     # appeler enregistrer_score(db, pseudo, score, resultat)
+    enregistrer_score(db, pseudo, score, resultat)
     # afficher le resultat final et le score
-    ...
+    print(f"\nRésultat final : {resultat} | Score : {score}")
 
 
 #fonction demander_pseudo(db)
+def demander_pseudo(db):
     #recuperer pseudos avec recuperer_pseudo_db(db)
+    pseudos = recuperer_pseudo_db(db)
     #tant que Vrai
+    while True:
         #entrez son pseudo et enlever les espaces au debut et a la fin
+        pseudo = input("Entre ton pseudo : ").strip()
         #si est_pseudo_valide(pseudo, pseudos) est faux
+        if not est_pseudo_valide(pseudo, pseudos):
             #afficher un message d'erreur
-
+            print("Ton pseudo n'est pas valide")
         #else
+        else:
             #retourner pseudo
+            return pseudo
 
 #fonction est_pseudo_valide(pseudo, pseudos)
+def est_pseudo_valide(pseudo, pseudos):
     #si la longueur du pseudo est comprise en 3 et 10 et que le pseudo n'est pas dans pseudos
+    if  3 <= len(pseudo) <= 10 and pseudo not in pseudos:
         #retourner vrai
+        return True
     #retourner faux
+    return False
 
 #fonction recuperer_pseudo_db(db)
+def recuperer_pseudo_db(db):
     #retourne la liste des pseudos enregistrés dans MongoDB
+    return db["user"].distinct(CHAMP_PSEUDO)
 
 
 #fonction demander_equipe(personnages)
+def demander_equipe(personnages):
     #creer une equipe vide
-
+    equipe = []
     # tant que l'equipe contient moins de TAILLE_EQUIPE personnages
+    while len(equipe) < TAILLE_EQUIPE:
         #afficher les perso disponibles
+        afficher_personnages(personnages)
         #demander au joueur de choisir
+        numero = demand
 
         #si est_personnage_valide(personnage, equipe, personnages)
             #ajouter une copie du personnage à l'equipe
@@ -117,6 +144,21 @@ def demarrer_partie(db):
 
     #retourner l'equipe complete
 
+#fonction demander_numero_personnage(personnages)
+def demander_numero_personnage(personnages):
+    #tant que vrai
+    while True:
+        #demander un numero et essayer de le convertir en entier
+        try:
+            numero = int(input("Choisis un personnage : "))
+        except ValueError:
+            print("Tu dois saisir un entier.")
+            continue
+        #si le numero est dans la liste, le retourner
+        if 1 <= numero <= len(personnages):
+            return numero
+        #sinon afficher un message d'erreur
+        print("Ce numéro n'est pas dans la liste.")
 
 #fonction est_personnage_valide(personnage, equipe, personnages)
     # si le personnage n'existe pas dans la liste
@@ -205,13 +247,20 @@ def demarrer_partie(db):
 # fonction afficher_personnages_dispo(db)
 def afficher_personnages_dispo(db):
     #appeler recuperer_personnages(db)
-    #récuperer personnages
+    personnages = recuperer_personnages(db)
     #appeler afficher_personnages(personnages)
-    ...
+    afficher_personnages(personnages)
 
 # fonction afficher_personnages(personnages)
+def afficher_personnages(personnages):
     # pour chaque personnage en tant que perso
+    for numero, perso in enumerate(personnages, start=1):
         # afficher le nom et les caractéristiques du perso
+        nom = perso[CHAMP_NOM]
+        pv = perso[CHAMP_PV]
+        degats = perso[CHAMP_DEGATS]
+        #afficher ses caracteristiques
+        print(f"{numero}. {nom} | {pv} PV | {degats} dégâts")
 
 
 # fonction calculer_score(score, resultat)
