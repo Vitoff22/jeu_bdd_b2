@@ -1,62 +1,72 @@
 #fonction main()
-    #connecter MongoDB
-    # recuperer les personnages et les monstres
-    #tant que le joueur ne quitte pas
-        #afficher le menu
-        #recuperer le choix
+    #connecter MongoDB et recuperer db
+    #tant que vrai
+        #appeler demande_menu
         #si demarrer
-            #demarrer_partie(personnage, monstres, db)
+            #appeler demarrer_partie(db)
+        #ou si le choix est voir les perso
+            #appeler afficher_personnages_disponibles(db)
         #sinon
             #arreter le jeu
 
+#fonction demander_menu()
+    #tant que vrai
+        #afficher les options numerotés
+        # demander au joueur de saisir un choix
+        # si le choix n'est pas un nombre valide
+            # afficher un message d'erreur
+        # sinon si le choix n'est pas compri entre 1 et 3
+            # afficher un message d'erreur
+        # sinon
+            # retourner le choix converti en entier
+
 # Fonction connecter_mongodb()
+    # etablir la connexion à MongoDB
+    # sélectionner la base de données
+    # retourner db
+
 # Fonction récupérer les personnages
+    # récupérer les personnages dans MongoDB
+    # retourner la liste des personnages
+
 # Fonction récupérer les monstres
+    # récupérer les monstres dans MongoDB
+    # retourner la liste des monstres
+
+
 
 # fonction demarrer_partie(personnages, monstres, db)
     # appeler choisir_pseudo()
-    # recuperer le pseudo
     # appeler creer_equipe(personnages)
-    # recuperer l'equipe complete
     # appeler lancer_combat(equipe, monstres)
     # recupere le score et le resultat
     # appeler enregistrer_score()
     # afficher le resultat final
 
-#fonction récuperer le choix de l'utilisateur
-    #tant que le choix n'est pas valide
-        #demander au joueur de saisir un choix
-        #si le choix est un nombre n'est pas valide
-            #afficher un message d'erreur
-            #redemander un choix
-        #si le choix n'est pas compris la liste du menu
-            #afficher que le choix n'est pas valide
-            #redemander un choix
-        #sinon  
-            #retourner le choix
-
 #fonction choisir un pseudo
-    #tant que le pseudo n'est pas valide
+    #tant que Vrai
         #entrez son pseudo
         #appeler la fonction verifier le pseudo
 
-        #si le pseudo  est faux
+        #si le pseudo  est faux (appeler la fonction verifier le pseudo)
             #afficher un message d'erreur
-            #redemander un pseudo
+
         #else
             #retourner pseudo
 
 #fonction verifier le pseudo
-    #si la longueur du pseudo est inferieur a 3 ou superieur a 10
-        #retourner faux
-    #sinon
+    #si la longueur du pseudo est comprise en 3 et 10 et que le pseudo n'est pas dans liste pseudo
         #retourner vrai
+    #retourner faux
 
-#faire choisir 3 personnages au joueur
+#fonction recuperer_pseudo_db
+    #retourne liste pseudo
+
+#fonction recuperer creer_equipe
     #creer une equipe vide
     #afficher la liste des perso
 
-    # tant que l'equipe contient pas 3 joueurs
+    # tant que l'equipe n'est pas complete
         #afficher les perso disponibles
         #demander au joueur de choisir
 
@@ -70,23 +80,13 @@
         # retourner faux
     # si le personnage est déjà dans l'équipe
         # retourner faux
-    # sinon
-        # retourner vrai
-
-#fonction verifier equipe complete
-    #si contient 3 perso
-        #afficher l'equipe complete
-        #passer au combat
-    #sinon
-        #retourner choisir 3 perso
+    # retourner vrai
 
 #fonction afficher l'equipe
-    #si l'equipe contient 3 personnages
-        #afficher l'equipe complete
+    #afficher les membres de l'equipe
 
-    #sinon
-        #afficher que l'equipe est incomplete
-        #retouner au choix des perso
+#fonction afficher l'equipe
+        #afficher l'equipe complete
 
 
 # fonction lancer_combat(equipe, monstres)
@@ -175,3 +175,16 @@
         # retirer 1 au score sans descendre sous 0
         # afficher le point perdu
     # retourner le score
+
+# fonction tirer_monstre(monstres)
+    # sélectionner aléatoirement un monstre
+    # créer une copie du monstre
+    # retourner le monstre
+
+# fonction enregistrer_score(db, pseudo, score, resultat)
+    # créer un document avec les résultats
+    # enregistrer le document dans MongoDB
+
+# fonction afficher_personnages_dispo(db)
+    #appeler recuperer_personnages(db)
+    #appeler afficher_personnages(perso)
