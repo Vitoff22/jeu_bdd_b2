@@ -1,3 +1,5 @@
+#TAILLE_EQUIPE = 3
+
 #fonction main()
     #connecter MongoDB et recuperer db
     #tant que vrai
@@ -5,7 +7,7 @@
         #si demarrer
             #appeler demarrer_partie(db)
         #ou si le choix est voir les perso
-            #appeler afficher_personnages_disponibles(db)
+            #appeler afficher_personnages_dispo(db)
         #sinon
             #arreter le jeu
 
@@ -14,7 +16,7 @@
     #tant que vrai
         #afficher les options numerotés
         # demander au joueur de saisir un choix
-        # si le choix n'est pas un nombre valide
+        # si le choix n'est pas un entier valide
             # afficher un message d'erreur
         # sinon si le choix n'est pas compri entre 1 et 3
             # afficher un message d'erreur
@@ -28,55 +30,60 @@
     # sélectionner la base de données
     # retourner db
 
-# Fonction récupérer les personnages
+# Fonction recuperer_personnages(db)
     # récupérer les personnages dans MongoDB
     # retourner la liste des personnages
 
-# Fonction récupérer les monstres
+# Fonction recuperer_monstres(db)
     # récupérer les monstres dans MongoDB
     # retourner la liste des monstres
 
 
 
 # fonction demarrer_partie(db)
-    # appeler choisir_pseudo()
-    # appeler creer_equipe(personnages)
+    # recuperer personnages avec recuperer_personnages(db)
+    # si moins de TAILLE_EQUIPE personnages, afficher une erreur et revenir au menu
+    # recuperer pseudo avec demander_pseudo(db)
+    # recuperer equipe avec demander_equipe(personnages)
+    # recuperer monstres avec recuperer_monstres(db)
+    # si aucun monstre, afficher une erreur et revenir au menu
     # appeler lancer_combat(equipe, monstres)
     # recupere le score et le resultat
-    # appeler enregistrer_score()
-    # afficher le resultat final
+    # appeler enregistrer_score(db, pseudo, score, resultat)
+    # afficher le resultat final et le score
 
 
 
 #fonction demander_pseudo(db)
+    #recuperer pseudos avec recuperer_pseudo_db(db)
     #tant que Vrai
-        #entrez son pseudo
-        #appeler la fonction pseudo_valide
-
-        #si le pseudo  est faux (appeler la fonction verifier le pseudo)
+        #entrez son pseudo et enlever les espaces au debut et a la fin
+        #si pseudo_valide(pseudo, pseudos) est faux
             #afficher un message d'erreur
 
         #else
             #retourner pseudo
 
-#fonction pseudo_valide
-    #si la longueur du pseudo est comprise en 3 et 10 et que le pseudo n'est pas dans liste pseudo de mongoDB
+#fonction pseudo_valide(pseudo, pseudos)
+    #si la longueur du pseudo est comprise en 3 et 10 et que le pseudo n'est pas dans pseudos
         #retourner vrai
     #retourner faux
 
-#fonction recuperer_pseudo_db
-    #retourne liste pseudo
+#fonction recuperer_pseudo_db(db)
+    #retourne la liste des pseudos enregistrés dans MongoDB
 
 
 #fonction demander_equipe(personnages)
     #creer une equipe vide
-    #afficher la liste des perso
 
-    # tant que l'equipe n'est pas complete
+    # tant que l'equipe contient moins de TAILLE_EQUIPE personnages
         #afficher les perso disponibles
         #demander au joueur de choisir
 
-        #appeler la fonctin verifier personnage
+        #si personnage_valide(personnage, equipe, personnages)
+            #ajouter une copie du personnage à l'equipe
+        #sinon
+            #afficher un message d'erreur
 
     #retourner l'equipe complete
 
@@ -89,64 +96,50 @@
     # retourner vrai
 
 
-#fonction afficher l'equipe
-    #afficher les membres de l'equipe
-
-
 # fonction lancer_combat(equipe, monstres)
     # initialiser le score à 0
     # pour chaque manche de 1 à 3
-        #recuperer le resultat du combat de jouer_manche()
-        # appeler calculer_score(score, resultat)
+        #recuperer le resultat du combat de jouer_manche(equipe, monstres, manche)
+        # remplacer score par le resultat de calculer_score(score, resultat)
         # si le résultat est une defaite
             #arreter les manches
-    # si les 3 manches sont gagnées
-        #afficher le victoire finale 
     # retourner le score et le résultat final
 
 
 # fonction combattre(equipe, monstre)
-    # tant que le monstre et l'équipe sont vivants
-        # appeler tour_equipe()
+    # tant que est_vivant(monstre) et equipe_vivante(equipe)
+        # appeler tour_equipe(equipe, monstre)
         # si le monstre est encore vivant
-            # appeler tour_monstre()
-    # appeler verifier_victoire()
+            # appeler tour_monstre(equipe, monstre)
+    # appeler verifier_victoire(monstre)
     # retourner le résultat
 
 
-#fonction tour equipe(equipe, monstre)
+#fonction tour_equipe(equipe, monstre)
     #pour chaque personnage de l'equipe
         #si le monstre est mort
             #stopper le tour
         #si le perso est vivant
-            #appeler attaque monstre
+            #appeler attaquer(perso, monstre)
 
 
-#fonction attaquer monstre(perso, monstre)
-    # récupérer les dégats du personnage
-    # appeler calculer_degats()
-    # retirer les degats aux PV du monstre
+#fonction attaquer(attaquant, cible)
+    # récupérer les dégats de l'attaquant
+    # retirer les degats aux PV de la cible
     # afficher les degats
     # afficher les PV restants
 
-#fonction tour monstre
+#fonction tour_monstre(equipe, monstre)
     # recuperer les perso vivants
     # choisir un perso vivant aleatoirement 
-    # appeler attaque personnage
+    # appeler attaquer(monstre, perso)
 
-#fonction attaquer personnage(monstre, personnage)
-    # recuperer les dégâts du monstre
-    # appeler calculer_degats()
-    # retirer les dégâts aux PV du personnage
-    # afficher les degats
-    # afficher les PV restants
-
-#fonction jouer manche(equipe, monstres, manche)
-    #choisir un monstre
+#fonction jouer_manche(equipe, monstres, manche)
+    #recuperer un monstre avec tirer_monstre(monstres)
     #afficher le numero de manche
     # afficher les PV des personnages
     # afficher les PV du monstre
-    # appeler combattre()
+    # appeler combattre(equipe, monstre)
     # retourner le résultat
 
 # fonction est_vivant(personnage)
@@ -158,14 +151,9 @@
 
 # fonction equipe_vivante(equipe)
     # pour chaque personnage de l'équipe
-        # si le personnage est vivant
+        # si est_vivant(personnage)
             # retourner vrai
     # retourner faux
-
-
-# fonction calculer_degats(attaquant)
-    # récupérer les dégâts de l'attaquant
-    # retourner les dégâts
 
 
 # fonction verifier_victoire(monstre)
@@ -178,7 +166,7 @@
 # fonction tirer_monstre(monstres)
     # sélectionner aléatoirement un monstre
     # créer une copie du monstre
-    # retourner le monstre
+    # retourner la copie du monstre
 
 # fonction enregistrer_score(db, pseudo, score, resultat)
     # créer un document avec les résultats
@@ -198,6 +186,3 @@
     #si resultat est une victoire
         #retourner score +1
     #retourner le maximum entre 0 et score -1
-
-#fonction afficher_score(score)
-    #afficher le score actuel
