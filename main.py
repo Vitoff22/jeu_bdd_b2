@@ -1,13 +1,14 @@
 #fonction main()
     #connecter MongoDB et recuperer db
     #tant que vrai
-        #appeler demande_menu
+        #appeler demander_menu() et recuperer le choix
         #si demarrer
             #appeler demarrer_partie(db)
         #ou si le choix est voir les perso
             #appeler afficher_personnages_disponibles(db)
         #sinon
             #arreter le jeu
+
 
 #fonction demander_menu()
     #tant que vrai
@@ -19,6 +20,8 @@
             # afficher un message d'erreur
         # sinon
             # retourner le choix converti en entier
+
+
 
 # Fonction connecter_mongodb()
     # etablir la connexion à MongoDB
@@ -35,7 +38,7 @@
 
 
 
-# fonction demarrer_partie(personnages, monstres, db)
+# fonction demarrer_partie(db)
     # appeler choisir_pseudo()
     # appeler creer_equipe(personnages)
     # appeler lancer_combat(equipe, monstres)
@@ -43,10 +46,12 @@
     # appeler enregistrer_score()
     # afficher le resultat final
 
-#fonction choisir un pseudo
+
+
+#fonction demander_pseudo(db)
     #tant que Vrai
         #entrez son pseudo
-        #appeler la fonction verifier le pseudo
+        #appeler la fonction pseudo_valide
 
         #si le pseudo  est faux (appeler la fonction verifier le pseudo)
             #afficher un message d'erreur
@@ -54,15 +59,16 @@
         #else
             #retourner pseudo
 
-#fonction verifier le pseudo
-    #si la longueur du pseudo est comprise en 3 et 10 et que le pseudo n'est pas dans liste pseudo
+#fonction pseudo_valide
+    #si la longueur du pseudo est comprise en 3 et 10 et que le pseudo n'est pas dans liste pseudo de mongoDB
         #retourner vrai
     #retourner faux
 
 #fonction recuperer_pseudo_db
     #retourne liste pseudo
 
-#fonction recuperer creer_equipe
+
+#fonction demander_equipe(personnages)
     #creer une equipe vide
     #afficher la liste des perso
 
@@ -70,35 +76,34 @@
         #afficher les perso disponibles
         #demander au joueur de choisir
 
-        #appeler la fonctoin verifier personnage
-
+        #appeler la fonctin verifier personnage
 
     #retourner l'equipe complete
 
-#fonction verifier perso(personnage, equipe, personnages)
+
+#fonction personnage_valide(personnage, equipe, personnages)
     # si le personnage n'existe pas dans la liste
         # retourner faux
     # si le personnage est déjà dans l'équipe
         # retourner faux
     # retourner vrai
 
-#fonction afficher l'equipe
-    #afficher les membres de l'equipe
 
 #fonction afficher l'equipe
-        #afficher l'equipe complete
+    #afficher les membres de l'equipe
 
 
 # fonction lancer_combat(equipe, monstres)
     # initialiser le score à 0
     # pour chaque manche de 1 à 3
         #recuperer le resultat du combat de jouer_manche()
-        # appeler modifier_score(score, resultat)
+        # appeler calculer_score(score, resultat)
         # si le résultat est une defaite
             #arreter les manches
     # si les 3 manches sont gagnées
         #afficher le victoire finale 
     # retourner le score et le résultat final
+
 
 # fonction combattre(equipe, monstre)
     # tant que le monstre et l'équipe sont vivants
@@ -108,12 +113,14 @@
     # appeler verifier_victoire()
     # retourner le résultat
 
+
 #fonction tour equipe(equipe, monstre)
     #pour chaque personnage de l'equipe
         #si le monstre est mort
             #stopper le tour
         #si le perso est vivant
             #appeler attaque monstre
+
 
 #fonction attaquer monstre(perso, monstre)
     # récupérer les dégats du personnage
@@ -167,14 +174,6 @@
     # sinon
         # retourner défaite
 
-# fonction modifier_score(score, resultat)
-    # si le joueur gagne
-        # ajouter 1 au score
-        # afficher le point gagné
-    # sinon si le joueur perd
-        # retirer 1 au score sans descendre sous 0
-        # afficher le point perdu
-    # retourner le score
 
 # fonction tirer_monstre(monstres)
     # sélectionner aléatoirement un monstre
@@ -187,4 +186,18 @@
 
 # fonction afficher_personnages_dispo(db)
     #appeler recuperer_personnages(db)
-    #appeler afficher_personnages(perso)
+    #récuperer personnages
+    #appeler afficher_personnages(personnages)
+
+# fonction afficher_personnages(personnages)
+    # pour chaque personnage en tant que perso
+        # afficher le nom et les caractéristiques du perso
+
+
+# fonction calculer_score(score, resultat)
+    #si resultat est une victoire
+        #retourner score +1
+    #retourner le maximum entre 0 et score -1
+
+#fonction afficher_score(score)
+    #afficher le score actuel
