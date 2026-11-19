@@ -7,7 +7,7 @@ TAILLE_EQUIPE = 3
 #champs de moongodb
 CHAMP_NOM = "name"
 CHAMP_PV = "hp"
-CHAMP_DEGATS = "damage"
+CHAMP_DEGATS = "atk"
 CHAMP_PSEUDO = "pseudo"
 
 
@@ -93,6 +93,22 @@ def demarrer_partie(db):
     # afficher le resultat final et le score
     print(f"\nRésultat final : {resultat} | Score : {score}")
 
+#fonction charger_combattants(db)
+def charger_combattants(db):
+    """Récupérer les listes et vérifier qu'une partie est possible."""
+    #recuperer les personnages
+    personnages = recuperer_personnages(db)
+    #si moins de TAILLE_EQUIPE personnages, afficher une erreur
+    if len(personnages) < TAILLE_EQUIPE:
+        print("Il n'y a pas assez de personnages pour former une équipe.")
+        return [], []
+    #recuperer les monstres
+    monstres = recuperer_monstres(db)
+    #si aucun monstre, afficher une erreur
+    if not monstres:
+        print("Aucun monstre disponible.")
+    #retourner les deux listes
+    return personnages, monstres
 
 #fonction demander_pseudo(db)
 def demander_pseudo(db):
@@ -135,14 +151,20 @@ def demander_equipe(personnages):
         #afficher les perso disponibles
         afficher_personnages(personnages)
         #demander au joueur de choisir
-        numero = demand
+        numero = demander_numero_personnage(personnages)
+        personnage = personnages[numero - 1]
 
         #si est_personnage_valide(personnage, equipe, personnages)
+        if est_personnage_valide(personnage, equipe, personnages):
             #ajouter une copie du personnage à l'equipe
+            equipe.append(personnage.copy())
         #sinon
+        else:
             #afficher un message d'erreur
+            print("Ton personnage est deja dans l'equipe")
 
     #retourner l'equipe complete
+    return equipe
 
 #fonction demander_numero_personnage(personnages)
 def demander_numero_personnage(personnages):
@@ -161,88 +183,142 @@ def demander_numero_personnage(personnages):
         print("Ce numéro n'est pas dans la liste.")
 
 #fonction est_personnage_valide(personnage, equipe, personnages)
+def est_personnage_valide(personnage, equipe, personnages):
     # si le personnage n'existe pas dans la liste
+    if personnage not in personnages:
         # retourner faux
+        return False
     # si le personnage est déjà dans l'équipe
+    if personnage in equipe:
         # retourner faux
+        return False
     # retourner vrai
+    return True
 
 
 # fonction lancer_combat(equipe, monstres)
+def lancer_combat(equipe, monstres):
     # initialiser le score à 0
+    score = 0
     # pour chaque manche de 1 à 3
+    for manche in range(1,4):
         #recuperer le resultat du combat de jouer_manche(equipe, monstres, manche)
+        resultat = jouer_manche(equipe, monstres, manche)
         # remplacer score par le resultat de calculer_score(score, resultat)
+        score = calculer_score(score, resultat)
         # si le résultat est une defaite
+        if resultat == "defaite":
             #arreter les manches
+            break
     # retourner le score et le résultat final
+    return score, resultat
 
 
 # fonction combattre(equipe, monstre)
+def combattre(equipe, monstre):
     # tant que est_vivant(monstre) et est_equipe_vivante(equipe)
+    while est_vivant(monstre) and est_equipe_vivante(equipe):
         # appeler tour_equipe(equipe, monstre)
+        tour_equipe(equipe, monstre)
         # si le monstre est encore vivant
-            # appeler tour_monstre(equipe, monstre)
+        if est_vivant(monstre):
+           # appeler tour_monstre(equipe, monstre)
+           tour_monstre(equipe, monstre)
     # appeler verifier_victoire(monstre)
     # retourner le résultat
+    return verifier_victoire(monstre)
 
 
 #fonction tour_equipe(equipe, monstre)
+def tour_equipe(equipe, monstre):
     #pour chaque personnage de l'equipe
+    for personnage in equipe:
         #si le monstre est mort
+        if not est_vivant(monstre):
             #stopper le tour
+            break
         #si le perso est vivant
+        if est_vivant(personnage):
             #appeler attaquer(perso, monstre)
+            attaquer(personnage, monstre)
+    ...
 
 
 #fonction attaquer(attaquant, cible)
+def attaquer(attaquant, cible):
     # récupérer les dégats de l'attaquant
+    degats = attaquant[CHAMP_DEGATS]
     # retirer les degats aux PV de la cible
+    cible[CHAMP_PV] = max(0, cible[CHAMP_PV] - degats)
     # afficher les degats
+    print(f"{attaquant[CHAMP_NOM]} inflige {degats} dégâts à {cible[CHAMP_NOM]}.")
     # afficher les PV restants
+    print(f"PV restants : {cible[CHAMP_PV]}")
 
 #fonction tour_monstre(equipe, monstre)
+def tour_monstre(equipe, monstre):
     # recuperer les perso vivants
+    personnages_vivants = [perso for perso in equipe if est_vivant(perso)]
     # choisir un perso vivant aleatoirement 
+    perso = choice(personnages_vivants)
     # appeler attaquer(monstre, perso)
+    attaquer(monstre, perso)
+
 
 #fonction jouer_manche(equipe, monstres, manche)
+def jouer_manche(equipe, monstres, manche):
     #recuperer un monstre avec tirer_monstre(monstres)
+    monstre = tirer_monstre(monstres)
     #afficher le numero de manche
+    print(f"\n Manche {manche}")
     # afficher les PV des personnages
+    afficher_personnages(equipe)
     # afficher les PV du monstre
+    print(f"Monstre : {monstre[CHAMP_NOM]} | {monstre[CHAMP_PV]} PV")
     # appeler combattre(equipe, monstre)
     # retourner le résultat
+    return combattre(equipe, monstre)
 
 # fonction est_vivant(personnage)
-    # si les PV sont supérieurs à zéro
-        # retourner vrai
-    # sinon
-        # retourner faux
+def est_vivant(personnage):
+    return personnage[CHAMP_PV] > 0
 
 
 # fonction est_equipe_vivante(equipe)
+def est_equipe_vivante(equipe):
     # pour chaque personnage de l'équipe
+    for personnage in equipe:
         # si est_vivant(personnage)
+        if est_vivant(personnage):
             # retourner vrai
+            return True
     # retourner faux
+    return False
 
 
 # fonction verifier_victoire(monstre)
+def verifier_victoire(monstre): 
     # si les PV du monstre sont inférieurs ou égaux à 0
+    if not est_vivant(monstre):
         # retourner victoire
-    # sinon
-        # retourner défaite
-
+        return "victoire"
+    # retourner défaite
+    return "defaite"
 
 # fonction tirer_monstre(monstres)
+def tirer_monstre(monstres):
     # sélectionner aléatoirement un monstre
+    monstre = choice(monstres)
     # créer une copie du monstre
     # retourner la copie du monstre
+    return monstre.copy()
 
 # fonction enregistrer_score(db, pseudo, score, resultat)
+def enregistrer_score(db, pseudo, score, resultat):
     # créer un document avec les résultats
+    document = {CHAMP_PSEUDO: pseudo, "score": score, "resultat": resultat}
     # enregistrer le document dans MongoDB
+    db["user"].insert_one(document)
 
 # fonction afficher_personnages_dispo(db)
 def afficher_personnages_dispo(db):
@@ -264,9 +340,13 @@ def afficher_personnages(personnages):
 
 
 # fonction calculer_score(score, resultat)
+def calculer_score(score, resultat):
     #si resultat est une victoire
+    if resultat == "victoire":
         #retourner score +1
+        return score + 1
     #retourner le maximum entre 0 et score -1
+    return max(0, score - 1)
 
 if __name__ == "__main__":
     main()
