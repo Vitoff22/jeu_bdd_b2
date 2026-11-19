@@ -39,23 +39,24 @@ def demander_menu():
     while True:
         #afficher les options numerotés
         print("1. Démarrer")
-        print("2. Voir les personnages")
+        print("2. Voir les nstrespersonnages")
         print("3. Quitter")
         # demander au joueur de saisir un choix
-        try:
-            choix = int(input("Ton choix : "))
-        # si le choix n'est pas un entier valide
-        except ValueError:
-            # afficher un message d'erreur
-            print("Tu dois saisir un entier.")
+        saisie = input("Ton choix : ").strip()
+        if not est_saisie_numerique(saisie):
+            print("Tu dois saisir un numéro.")
             continue
+        #convertir la saisie en entier
+        choix = int(saisie)
         # sinon si le choix n'est pas compri entre 1 et 3
-        if 1 <= choix <= 3:
+        if est_choix_menu_valide(choix):
             return choix
             # afficher un message d'erreur
         print("Ton choix n'est pas dans les options")        
 
-
+#verifie que l'utilisateur entre bien un chiffre
+def est_saisie_numerique(saisie):
+    return saisie.isascii() and saisie.isdigit()
 
 # Fonction connecter_mongodb()
 def connecter_mongodb():
@@ -82,6 +83,9 @@ def recuperer_monstres(db):
 def demarrer_partie(db):
     #recuperer les perso et monstres
     personnages, monstres = charger_combattants(db)
+    # si aucun perso ou monstre est dispo ne pas lancer la game
+    if not personnages or not monstres:
+        return
     #appeler demander_pseudo
     pseudo = demander_pseudo(db)
     #appeler demander_equipe
@@ -121,7 +125,7 @@ def demander_pseudo(db):
         #si est_pseudo_valide(pseudo, pseudos) est faux
         if not est_pseudo_valide(pseudo, pseudos):
             #afficher un message d'erreur
-            print("Ton pseudo n'est pas valide")
+            print("Choisis un pseudo disponible de 3 à 10 caractères.")
         #else
         else:
             #retourner pseudo
@@ -141,13 +145,16 @@ def recuperer_pseudo_db(db):
     #retourne la liste des pseudos enregistrés dans MongoDB
     return db["user"].distinct(CHAMP_PSEUDO)
 
+#verifie que l'equipe est complete
+def est_equipe_complete(equipe):
+    return len(equipe) >= TAILLE_EQUIPE
 
 #fonction demander_equipe(personnages)
 def demander_equipe(personnages):
     #creer une equipe vide
     equipe = []
     # tant que l'equipe contient moins de TAILLE_EQUIPE personnages
-    while len(equipe) < TAILLE_EQUIPE:
+    while not est_equipe_complete(equipe):
         #afficher les perso disponibles
         afficher_personnages(personnages)
         #demander au joueur de choisir
@@ -158,7 +165,6 @@ def demander_equipe(personnages):
         if est_personnage_valide(personnage, equipe, personnages):
             #ajouter une copie du personnage à l'equipe
             equipe.append(personnage.copy())
-        #sinon
         else:
             #afficher un message d'erreur
             print("Ton personnage est deja dans l'equipe")
@@ -170,12 +176,14 @@ def demander_equipe(personnages):
 def demander_numero_personnage(personnages):
     #tant que vrai
     while True:
-        #demander un numero et essayer de le convertir en entier
-        try:
-            numero = int(input("Choisis un personnage : "))
-        except ValueError:
-            print("Tu dois saisir un entier.")
+        # demander un numero au joueur
+        saisie = input("Choisis un personnage : ").strip()
+        # verifier la saisie avant de la convertir
+        if not est_saisie_numerique(saisie):
+            print("Tu dois saisir un numéro.")
             continue
+
+        numero = int(saisie)
         #si le numero est dans la liste, le retourner
         if 1 <= numero <= len(personnages):
             return numero
@@ -241,7 +249,6 @@ def tour_equipe(equipe, monstre):
         if est_vivant(personnage):
             #appeler attaquer(perso, monstre)
             attaquer(personnage, monstre)
-    ...
 
 
 #fonction attaquer(attaquant, cible)
@@ -347,6 +354,10 @@ def calculer_score(score, resultat):
         return score + 1
     #retourner le maximum entre 0 et score -1
     return max(0, score - 1)
+
+#verifie que le choix est bien dans l'intervalle donné
+def est_choix_menu_valide(choix):
+    return 1 <= choix <= 3
 
 if __name__ == "__main__":
     main()
