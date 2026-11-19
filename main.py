@@ -35,7 +35,6 @@ def main():
             #arreter le jeu
             break
 
-
 #fonction demander_menu()
 def demander_menu():
     #tant que vrai
@@ -81,7 +80,6 @@ def recuperer_monstres(db):
     # récupérer les monstres dans MongoDB
     # retourner la liste des monstres
     return list(db["monsters"].find())
-
 
 # fonction demarrer_partie(db)
 def demarrer_partie(db):
@@ -130,7 +128,6 @@ def demander_pseudo(db):
         if not est_pseudo_valide(pseudo, pseudos):
             #afficher un message d'erreur
             print("Choisis un pseudo disponible de 3 à 10 caractères.")
-        #else
         else:
             #retourner pseudo
             return pseudo
@@ -157,22 +154,16 @@ def est_equipe_complete(equipe):
 def demander_equipe(personnages):
     #creer une equipe vide
     equipe = []
+    disponibles = personnages.copy()
     # tant que l'equipe contient moins de TAILLE_EQUIPE personnages
     while not est_equipe_complete(equipe):
         #afficher les perso disponibles
-        afficher_personnages(personnages)
+        afficher_personnages(disponibles)
         #demander au joueur de choisir
-        numero = demander_numero_personnage(personnages)
-        personnage = personnages[numero - 1]
-
-        #si est_personnage_valide(personnage, equipe, personnages)
-        if est_personnage_valide(personnage, equipe, personnages):
-            #ajouter une copie du personnage à l'equipe
-            equipe.append(personnage.copy())
-        else:
-            #afficher un message d'erreur
-            print("Ton personnage est deja dans l'equipe")
-
+        numero = demander_numero_personnage(disponibles)
+        # retirer le perso choisi et ajouter sa copie à l'equipe
+        personnage = disponibles.pop(numero - 1)
+        equipe.append(personnage.copy())
     #retourner l'equipe complete
     return equipe
 
@@ -186,27 +177,12 @@ def demander_numero_personnage(personnages):
         if not est_saisie_numerique(saisie):
             print("Tu dois saisir un numéro.")
             continue
-
         numero = int(saisie)
         #si le numero est dans la liste, le retourner
         if 1 <= numero <= len(personnages):
             return numero
         #sinon afficher un message d'erreur
         print("Ce numéro n'est pas dans la liste.")
-
-#fonction est_personnage_valide(personnage, equipe, personnages)
-def est_personnage_valide(personnage, equipe, personnages):
-    # si le personnage n'existe pas dans la liste
-    if personnage not in personnages:
-        # retourner faux
-        return False
-    # si le personnage est déjà dans l'équipe
-    if personnage in equipe:
-        # retourner faux
-        return False
-    # retourner vrai
-    return True
-
 
 # fonction lancer_combat(equipe, monstres)
 def lancer_combat(equipe, monstres):
@@ -225,7 +201,6 @@ def lancer_combat(equipe, monstres):
     # retourner le score et le résultat final
     return score, resultat
 
-
 # fonction combattre(equipe, monstre)
 def combattre(equipe, monstre):
     # tant que est_vivant(monstre) et est_equipe_vivante(equipe)
@@ -240,7 +215,6 @@ def combattre(equipe, monstre):
     # retourner le résultat
     return verifier_victoire(monstre)
 
-
 #fonction tour_equipe(equipe, monstre)
 def tour_equipe(equipe, monstre):
     #pour chaque personnage de l'equipe
@@ -253,7 +227,6 @@ def tour_equipe(equipe, monstre):
         if est_vivant(personnage):
             #appeler attaquer(perso, monstre)
             attaquer(personnage, monstre)
-
 
 #fonction attaquer(attaquant, cible)
 def attaquer(attaquant, cible):
@@ -275,7 +248,6 @@ def tour_monstre(equipe, monstre):
     # appeler attaquer(monstre, perso)
     attaquer(monstre, perso)
 
-
 #fonction jouer_manche(equipe, monstres, manche)
 def jouer_manche(equipe, monstres, manche):
     #recuperer un monstre avec tirer_monstre(monstres)
@@ -294,7 +266,6 @@ def jouer_manche(equipe, monstres, manche):
 def est_vivant(personnage):
     return personnage[CHAMP_PV] > 0
 
-
 # fonction est_equipe_vivante(equipe)
 def est_equipe_vivante(equipe):
     # pour chaque personnage de l'équipe
@@ -305,7 +276,6 @@ def est_equipe_vivante(equipe):
             return True
     # retourner faux
     return False
-
 
 # fonction verifier_victoire(monstre)
 def verifier_victoire(monstre): 
@@ -349,7 +319,6 @@ def afficher_personnages(personnages):
         #afficher ses caracteristiques
         print(f"{numero}. {nom} | {pv} PV | {degats} dégâts")
 
-
 # fonction calculer_score(score, resultat)
 def calculer_score(score, resultat):
     #si resultat est une victoire
@@ -366,7 +335,6 @@ def recuperer_meilleurs_scores(db):
     scores = db["user"].find(filtre).sort("score", -1).limit(10)
     return list(scores)
 
-
 def afficher_meilleurs_scores(db):
     # recuperer les scores et verifier que la liste n'est pas vide
     scores = recuperer_meilleurs_scores(db)
@@ -382,7 +350,6 @@ def afficher_meilleurs_scores(db):
 #verifie que le choix est bien dans l'intervalle donné
 def est_choix_menu_valide(choix):
     return 1 <= choix <= 4
-
 
 if __name__ == "__main__":
     main()
