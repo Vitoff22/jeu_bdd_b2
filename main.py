@@ -27,6 +27,9 @@ def main():
         elif choix == 2:
             #appeler afficher_personnages_dispo(db)
             afficher_personnages_dispo(db)
+        elif choix == 3:
+            #montrer les scores
+            afficher_meilleurs_scores(db)
         #sinon
         else:
             #arreter le jeu
@@ -38,9 +41,10 @@ def demander_menu():
     #tant que vrai
     while True:
         #afficher les options numerotés
-        print("1. Démarrer")
-        print("2. Voir les nstrespersonnages")
-        print("3. Quitter")
+        print("\n1. Démarrer")
+        print("2. Voir les personnages")
+        print("3. Voir les scores")
+        print("4. Quitter")
         # demander au joueur de saisir un choix
         saisie = input("Ton choix : ").strip()
         if not est_saisie_numerique(saisie):
@@ -355,9 +359,30 @@ def calculer_score(score, resultat):
     #retourner le maximum entre 0 et score -1
     return max(0, score - 1)
 
+def recuperer_meilleurs_scores(db):
+    # garder seulement les doc qui ont un score numérique
+    filtre = {"score": {"$type": "number"}}
+    # trier du plus grand au plus petit score et garder les dix premiers
+    scores = db["user"].find(filtre).sort("score", -1).limit(10)
+    return list(scores)
+
+
+def afficher_meilleurs_scores(db):
+    # recuperer les scores et verifier que la liste n'est pas vide
+    scores = recuperer_meilleurs_scores(db)
+    if not scores:
+        print("Aucun score enregistré.")
+        return
+    # afficher les scores avec leur rang
+    print("\nMeilleurs scores")
+    for rang, document in enumerate(scores, start=1):
+        pseudo = document.get(CHAMP_PSEUDO, "Inconnu")
+        print(f"{rang}. {pseudo} | Score : {document['score']}")
+
 #verifie que le choix est bien dans l'intervalle donné
 def est_choix_menu_valide(choix):
-    return 1 <= choix <= 3
+    return 1 <= choix <= 4
+
 
 if __name__ == "__main__":
     main()
