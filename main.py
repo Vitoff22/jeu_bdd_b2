@@ -1,4 +1,9 @@
-from bdd import connecter_mongodb, enregistrer_score, recuperer_monstres, recuperer_personnages
+from bdd import (
+    connecter_mongodb,
+    enregistrer_score,
+    recuperer_monstres,
+    recuperer_personnages,
+    )
 from combat import lancer_combat
 from interface import (
     afficher_meilleurs_scores,
@@ -31,7 +36,6 @@ def main():
         elif choix == 3:
             #montrer les scores
             afficher_meilleurs_scores(db)
-        #sinon
         else:
             #arreter le jeu
             break
@@ -81,14 +85,14 @@ def demander_equipe(personnages):
     disponibles = personnages.copy()
     # tant que l'equipe contient moins de TAILLE_EQUIPE personnages
     while not est_equipe_complete(equipe):
-        #afficher les perso disponibles
+        #afficher les personnages disponibles
         afficher_personnages(disponibles)
-        # choisir un numero parmi les perso qui sont encore disponibles
+        # choisir un numero parmi les personnages qui sont encore disponibles
         numero = demander_choix("Choisis un personnage : ", len(disponibles))
-        # retirer le perso choisi et ajouter sa copie à l'equipe
+        # retirer le perso choisi et ajouter sa copie à l'équipe
         personnage = disponibles.pop(numero - 1)
         equipe.append(personnage.copy())
-    #retourner l'equipe complete
+    #retourner l'équipe complète
     return equipe
 
 if __name__ == "__main__":

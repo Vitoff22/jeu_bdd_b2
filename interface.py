@@ -58,7 +58,7 @@ def demander_pseudo(db):
 
 #fonction est_pseudo_valide(pseudo, pseudos)
 def est_pseudo_valide(pseudo, pseudos):
-    #si la longueur du pseudo est comprise en 3 et 10 et que le pseudo n'est pas dans pseudos
+    #si la longueur du pseudo est comprise en 3 et 10 et que le pseudo n'est pas présent dans la db
     if  3 <= len(pseudo) <= 10 and pseudo not in pseudos:
         #retourner vrai
         return True
@@ -80,7 +80,7 @@ def afficher_personnages(personnages):
         nom = perso[CHAMP_NOM]
         pv = perso[CHAMP_PV]
         degats = perso[CHAMP_DEGATS]
-        #afficher ses caracteristiques
+        #afficher ses caractéristiques
         print(f"{numero}. {nom} | {pv} PV | {degats} dégâts")
 
 def afficher_meilleurs_scores(db):

@@ -40,7 +40,7 @@ def enregistrer_score(db, pseudo, score, resultat):
 
 def recuperer_meilleurs_scores(db):
     # garder seulement les doc qui ont un score numérique
-    filtre = {"score": {"$type": "number"}}
+    filtre = {"score": {"$type": "number", "$not": {"$type": "array"}}}
     # trier du plus grand au plus petit score et garder les dix premiers
     scores = db["user"].find(filtre).sort("score", -1).limit(10)
     return list(scores)
