@@ -34,28 +34,31 @@ def main():
         else:
             #arreter le jeu
             break
+#affiche les options du menu
+def afficher_options_menu():
+    print("\n1. Démarrer")
+    print("2. Voir les personnages")
+    print("3. Voir les scores")
+    print("4. Quitter")
 
-#fonction demander_menu()
-def demander_menu():
-    #tant que vrai
+def demander_choix(message, maximum):
+    # tant que le choix est invalide, redemander
     while True:
-        #afficher les options numerotés
-        print("\n1. Démarrer")
-        print("2. Voir les personnages")
-        print("3. Voir les scores")
-        print("4. Quitter")
-        # demander au joueur de saisir un choix
-        saisie = input("Ton choix : ").strip()
+        saisie = input(message).strip()
+        # verifier la saisie avant de la convertir
         if not est_saisie_numerique(saisie):
             print("Tu dois saisir un numéro.")
             continue
-        #convertir la saisie en entier
         choix = int(saisie)
-        # sinon si le choix n'est pas compri entre 1 et 3
-        if est_choix_menu_valide(choix):
+        # retourner le choix s'il correspond a une option
+        if 1 <= choix <= maximum:
             return choix
-            # afficher un message d'erreur
-        print("Ton choix n'est pas dans les options")        
+        print(f"Choisis un numéro entre 1 et {maximum}.")
+
+#permet de demander le choix a l'utilisateur
+def demander_menu():
+    afficher_options_menu()
+    return demander_choix("Ton choix : ", 4)
 
 #verifie que l'utilisateur entre bien un chiffre
 def est_saisie_numerique(saisie):
@@ -101,7 +104,6 @@ def demarrer_partie(db):
 
 #fonction charger_combattants(db)
 def charger_combattants(db):
-    """Récupérer les listes et vérifier qu'une partie est possible."""
     #recuperer les personnages
     personnages = recuperer_personnages(db)
     #si moins de TAILLE_EQUIPE personnages, afficher une erreur
@@ -124,10 +126,12 @@ def demander_pseudo(db):
     while True:
         #entrez son pseudo et enlever les espaces au debut et a la fin
         pseudo = input("Entre ton pseudo : ").strip()
-        #si est_pseudo_valide(pseudo, pseudos) est faux
-        if not est_pseudo_valide(pseudo, pseudos):
-            #afficher un message d'erreur
-            print("Choisis un pseudo disponible de 3 à 10 caractères.")
+        # verifier la longueur
+        if not 3 <= len(pseudo) <= 10:
+         print("Ton pseudo doit contenir entre 3 et 10 caractères.")
+        #previent d'un pseudo deja utilisé
+        elif not est_pseudo_valide(pseudo, pseudos):
+            print("Ce pseudo est déjà utilisé. Choisis-en un")
         else:
             #retourner pseudo
             return pseudo
@@ -159,30 +163,13 @@ def demander_equipe(personnages):
     while not est_equipe_complete(equipe):
         #afficher les perso disponibles
         afficher_personnages(disponibles)
-        #demander au joueur de choisir
-        numero = demander_numero_personnage(disponibles)
+        # choisir un numero parmi les perso qui sont encore disponibles
+        numero = demander_choix("Choisis un personnage : ", len(disponibles))
         # retirer le perso choisi et ajouter sa copie à l'equipe
         personnage = disponibles.pop(numero - 1)
         equipe.append(personnage.copy())
     #retourner l'equipe complete
     return equipe
-
-#fonction demander_numero_personnage(personnages)
-def demander_numero_personnage(personnages):
-    #tant que vrai
-    while True:
-        # demander un numero au joueur
-        saisie = input("Choisis un personnage : ").strip()
-        # verifier la saisie avant de la convertir
-        if not est_saisie_numerique(saisie):
-            print("Tu dois saisir un numéro.")
-            continue
-        numero = int(saisie)
-        #si le numero est dans la liste, le retourner
-        if 1 <= numero <= len(personnages):
-            return numero
-        #sinon afficher un message d'erreur
-        print("Ce numéro n'est pas dans la liste.")
 
 # fonction lancer_combat(equipe, monstres)
 def lancer_combat(equipe, monstres):
@@ -346,10 +333,6 @@ def afficher_meilleurs_scores(db):
     for rang, document in enumerate(scores, start=1):
         pseudo = document.get(CHAMP_PSEUDO, "Inconnu")
         print(f"{rang}. {pseudo} | Score : {document['score']}")
-
-#verifie que le choix est bien dans l'intervalle donné
-def est_choix_menu_valide(choix):
-    return 1 <= choix <= 4
 
 if __name__ == "__main__":
     main()
