@@ -1,0 +1,92 @@
+[
+  {
+    "_id": {
+      "$oid": "69c3a1688952e932cde24479"
+    },
+    "name": "Guerrier",
+    "atk": 15,
+    "def": 10,
+    "hp": 100
+  },
+  {
+    "_id": {
+      "$oid": "69c3a1688952e932cde2447a"
+    },
+    "name": "Mage",
+    "atk": 20,
+    "def": 5,
+    "hp": 80
+  },
+  {
+    "_id": {
+      "$oid": "69c3a1688952e932cde2447b"
+    },
+    "name": "Archer",
+    "atk": 18,
+    "def": 7,
+    "hp": 90
+  },
+  {
+    "_id": {
+      "$oid": "69c3a1688952e932cde2447c"
+    },
+    "name": "Voleur",
+    "atk": 12,
+    "def": 12,
+    "hp": 85
+  },
+  {
+    "_id": {
+      "$oid": "69c3a1688952e932cde2447d"
+    },
+    "name": "Paladin",
+    "atk": 17,
+    "def": 8,
+    "hp": 110
+  },
+  {
+    "_id": {
+      "$oid": "69c3a1688952e932cde2447e"
+    },
+    "name": "Sorcier",
+    "atk": 22,
+    "def": 4,
+    "hp": 70
+  },
+  {
+    "_id": {
+      "$oid": "69c3a1688952e932cde2447f"
+    },
+    "name": "Chevalier",
+    "atk": 19,
+    "def": 6,
+    "hp": 120
+  },
+  {
+    "_id": {
+      "$oid": "69c3a1688952e932cde24480"
+    },
+    "name": "Moine",
+    "atk": 14,
+    "def": 9,
+    "hp": 95
+  },
+  {
+    "_id": {
+      "$oid": "69c3a1688952e932cde24481"
+    },
+    "name": "Berserker",
+    "atk": 25,
+    "def": 3,
+    "hp": 80
+  },
+  {
+    "_id": {
+      "$oid": "69c3a1688952e932cde24482"
+    },
+    "name": "Chasseur",
+    "atk": 16,
+    "def": 11,
+    "hp": 90
+  }
+]

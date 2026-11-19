@@ -1,0 +1,147 @@
+[
+  {
+    "_id": {
+      "$oid": "69c3bcf1541d736d106ac8c2"
+    },
+    "name": "Vitoff",
+    "score": [
+      5,
+      2,
+      1,
+      1
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "69c3bd52d91b204d34a34fda"
+    },
+    "name": "Vitoff",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69c3be238711e4f4de11e7e9"
+    },
+    "name": "Vitoff",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69c3be56bad3472fa4e530c4"
+    },
+    "name": "Vitoff",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69ccc3e75789c17290986fbd"
+    },
+    "name": "Vitoff",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69ccc5d0c83a4b8abc7fccc4"
+    },
+    "name": "vit",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69ccd2b1a0b9fcd010720f7b"
+    },
+    "name": "Vitf",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69ccd2de06677866c3e39d5b"
+    },
+    "name": "vitf",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69ccd34494abb7bd39dfe390"
+    },
+    "name": "Viro",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69ccd46d62d145e2bfe43e4c"
+    },
+    "name": " iutd",
+    "score": [
+      3
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "69ccdc0c7157efff245868f4"
+    },
+    "name": "Vitoff",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69ccdc5ce0ee76013578f5d7"
+    },
+    "name": "Vitoff",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69ccdd0a2e3b7ca0dad5cdec"
+    },
+    "name": "Vitoff",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "69ccdd4e2e3b7ca0dad5cded"
+    },
+    "name": "Vitoff",
+    "score": []
+  },
+  {
+    "_id": {
+      "$oid": "6afebbddd03b72aab416dbb9"
+    },
+    "pseudo": "Enriquet",
+    "score": 3,
+    "resultat": "victoire"
+  },
+  {
+    "_id": {
+      "$oid": "6afeef57411bcbf19b858cc7"
+    },
+    "pseudo": "Vitoff",
+    "score": 0,
+    "resultat": "defaite"
+  },
+  {
+    "_id": {
+      "$oid": "6afef6fc4cb9f94107c428fc"
+    },
+    "pseudo": "Vitou",
+    "score": 1,
+    "resultat": "defaite"
+  },
+  {
+    "_id": {
+      "$oid": "6afef7cd389b50824c22a329"
+    },
+    "pseudo": "Vitouff",
+    "score": 0,
+    "resultat": "defaite"
+  },
+  {
+    "_id": {
+      "$oid": "6afef8071db2c9fb7049c3e6"
+    },
+    "pseudo": "Vitoufff",
+    "score": 0,
+    "resultat": "defaite"
+  }
+]
